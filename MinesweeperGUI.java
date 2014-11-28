@@ -207,7 +207,7 @@ public class MinesweeperGUI extends JFrame implements Serializable{
 										System.out.println("Last life");
 
 									}
-									if(gameBoard.getLives()<0 && gameBoard.getLives()==-1){
+									if(gameBoard.getLives()==-1){
 										
 										revealBoard();
 										gameBoard.gameOver();
@@ -246,9 +246,13 @@ public class MinesweeperGUI extends JFrame implements Serializable{
 
 			gameGUI.add(boardPanel);
 		}
+		
+		
 
 
-
+	}
+	private void ProbeFunction(int numOfProb){
+		
 	}
 
 	protected void displayNumberBlock(JButton clickedButton, int numOfMinesAround) {

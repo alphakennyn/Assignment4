@@ -146,8 +146,9 @@ public class Game implements Serializable{
 	public void step(Block b){
 
 		if(isHasLost() == false && getLives()>=0){
+			System.out.print("a");
 			b.setAlreadyChecked(true);
-			
+
 			if(b instanceof Mines)
 				stepOnMines();
 			if(b instanceof Treasure)
@@ -161,9 +162,9 @@ public class Game implements Serializable{
 	private void stepOnMines(){
 		utility = new Mines();
 
-		
+
 		setLives(((Mines) utility).mineDamage(getLives()));
-		
+
 
 	}
 
@@ -177,27 +178,27 @@ public class Game implements Serializable{
 
 		int num = r.nextInt((end-start)+1)+start;
 
-		
-			if(num%2==0 && num<=10){
 
-				((Treasure) utility).getProbe(getNumOfProbs());//(5/30)
+		if(num%2==0 && num<=10){
+
+			((Treasure) utility).getProbe(getNumOfProbs());//(5/30)
+			return;
+
+		} else{
+			if(num == 2){
+				setLives(((Treasure) utility).immortal(getLives()));//(1/30)
 				return;
 
-			} else{
-				if(num == 2){
-					setLives(((Treasure) utility).immortal(getLives()));//(1/30)
-					return;
-
-				} else if(num%2!=0 && num>=16 ){
-					setLives(((Treasure) utility).getLives(getLives()));//(8/30)
-					return;
-				} else {
-					setScore(500);//(16/30)
-					System.out.println("+500 points");
-					return;
-				}
+			} else if(num%2!=0 && num>=16 ){
+				setLives(((Treasure) utility).getLives(getLives()));//(8/30)
+				return;
+			} else {
+				setScore(500);//(16/30)
+				System.out.println("+500 points");
+				return;
 			}
-		
+		}
+
 
 
 	}
@@ -207,16 +208,17 @@ public class Game implements Serializable{
 	 * This method will call method checkAround to determine whether it is blank or has a number associated to it
 	 */
 	private void stepOnBlank(){
-		
-			setScore(100);
+
+		setScore(100);
 
 	}
 
 	public void gameOver(){
-		setHasLost(true);
-	
-		System.out.println("lose " + isHasLost());
-		System.out.println("Total Score is: "+getScore());
+		if(!isHasLost()){
+			setHasLost(true);
+			System.out.println("lose " + isHasLost());
+			System.out.println("Total Score is: "+getScore());
+		}
 	}
 
 
