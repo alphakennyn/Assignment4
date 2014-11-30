@@ -14,7 +14,7 @@ public class Treasure extends Block implements Serializable{
 	//Player gets prob
 	public int getProbe(int numOfProb){
 		System.out.println("Probes");
-		return numOfProb++;
+		return ++numOfProb;
 		
 	}
 	
