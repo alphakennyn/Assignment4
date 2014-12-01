@@ -3,32 +3,46 @@ package Assignment4;
 import java.io.Serializable;
 import java.util.Random;
 
-public class Game implements Serializable {
+public class Game implements Serializable, Comparable{	
+
+	/**
+	 * Generated ID
+	 */
+	private static final long serialVersionUID = 4357356434872243842L;
 
 	private static int size = 10;
+
 	private int numOfProbs = 0;
 	private int lives = 3;
-	private int Score = 0;
+	private int score = 0;
 	private static Block utility;
 	private boolean hasLost;
 	private Block[][] board;
-	private String username;
+	private String userName;
 	private int numberOfMines = 15;
 
+	public Game(String name){
+		this.userName=name;
+	}
+
+	public Game() {
+
+	}
+
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 
 	public int getScore() {
-		return Score;
+		return score;
 	}
 
 	public void setScore(int score) {
-		this.Score += score;
+		this.score += score;
 	}
 
 	public int getNumOfProbs() {
@@ -74,7 +88,7 @@ public class Game implements Serializable {
 
 					int num = r.nextInt((end - start) + 1) + start;
 
-					// if (board[a][b] == null) {
+
 
 					if (num >= 1 && num <= 3 && numberOfMines > 0) {
 
@@ -96,12 +110,10 @@ public class Game implements Serializable {
 					}
 				}
 
-				// }
+
 			}
 
-		}
-		System.out.println(15 - numberOfMines);
-		System.out.println(3 - numberOfTreasure);
+		}		
 		// add numbers around mines
 		addNumbers(board);
 
@@ -167,29 +179,35 @@ public class Game implements Serializable {
 		utility = new Treasure();
 		Random r = new Random();
 		int start = 1;
-		int end = 30;
+		int end = 40;
 
 		int num = r.nextInt((end - start) + 1) + start;
 
-		if (num >= 0) {
+		if (num < 15) {
 
 			setNumOfProbs(((Treasure) utility).getProbe(getNumOfProbs()));// (5/30)
-			System.out.println(getNumOfProbs());
 			// continue;
 
 		}
-		/*
-		 * if (num == 2) {
-		 * 
-		 * setLives(((Treasure) utility).immortal(getLives()));
-		 * 
-		 * return;
-		 * 
-		 * } if (num % 2 != 0 && num >= 16) { setLives(((Treasure)
-		 * utility).getLives(getLives())); return; }
-		 * 
-		 * else { setScore(500); System.out.println("+500 points"); return; }
-		 */
+
+		if (num >= 15 && num <= 30) {
+			
+			setScore(500); 
+			return; 
+			
+
+		} if (num == 40) { 
+
+			setLives(((Treasure) utility).immortal(getLives()));
+			return;
+			
+		}
+
+		else { 
+			setLives(((Treasure) utility).getLives(getLives())); 
+			return; 
+			}
+
 	}
 
 	/*
@@ -235,5 +253,43 @@ public class Game implements Serializable {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int code = 0;
+
+		if(null != userName)
+			code += userName.hashCode();
+		code += this.lives;
+		code += this.numberOfMines;
+		code += this.numOfProbs;
+		code += this.score;
+
+		return code;
+	}
+
+
+	@Override
+	public int compareTo(Object obj) {
+		int i = -1;
+
+		if (null == obj) {
+			return i;
+		}
+		if (obj instanceof Game) {
+			i = Integer.valueOf(score).compareTo(((Game) obj).getScore());
+			if (i != 0) {
+				return i;
+			}
+			i = Integer.valueOf(lives).compareTo(((Game) obj).getLives());
+			if (i != 0) {
+				return i;
+			}		
+			i = userName.compareToIgnoreCase(((Game) obj).getUsername());
+
+		}
+
+		return i;
 	}
 }
